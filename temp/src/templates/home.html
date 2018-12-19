@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script type="text/javascript">
+
+
+window.onload = function() {
+	// setup the button click
+	document.getElementById("subButton").onclick = function() {
+		doWork()
+	};
+function doWork() {
+var data = {
+    name: document.getElementById('name').value,
+    temp: document.getElementById('temp').value
+};
+var objectData=JSON.stringify(data);
+//console.log(objectData);
+	// ajax the JSON to the server
+	$.post("results", objectData, function(){
+
+	}).done (function(data) {
+
+	   // console.log(data["d"]);
+
+        $("table tbody").empty().append("");
+        document.getElementById('name').value="";
+        document.getElementById('temp').value="";
+
+        obj = JSON.parse(data);
+        console.log(obj.d.length);
+
+        for (i=0; i<obj.d.length; i++) {
+            console.log(obj.d[i].name);
+            $("table tbody").append(`
+            <tr>
+            <td>${obj.d[i].name}</td>
+            <td>${obj.d[i].temp}</td>
+            </tr>`);
+        }
+
+
+
+
+
+        //data.forEach(function(element) {
+        //    console.log(element);
+        //});
+        //var c = $(data).find("#showContent");
+
+       // data1 = data.responseJSON;
+       // console.log(`blaa ${data1}`);
+
+
+
+      //   $.each(data, function(i, item){
+      //      alert("Mine is " + i + "|" + item.name + "|" + item.temp);
+      //  });
+
+
+       //var dataObj = JSON.stringify(data);
+        //console.log(dataObj);
+
+      // var obj=data[1];
+      // console.log(`bla ${data.name}`);
+
+
+
+       //document.getElementById("showContent").innerHTML = d.temp;
+
+
+	});
+	// stop link reloading the page
+ event.preventDefault();
+}
+
+
+}
+</script>
+<!--async function getWeatherAW(woeid) {
+  try {
+        const result = await fetch(`https://crossorigin.me/https://www.metaweather.com/api/location/${woeid}/`);
+        const data  = await result.json();
+        console.log(data);
+        const today = data.consolidated_weather[0];
+        console.log(`${data.title} , ${today.min_temp}`);
+        const tomorrow = data.consolidated_weather[1]; //use try catch for errors
+        return data;
+
+    } catch (error) {
+      alert(error);
+    }
+  }
+//async func always returns a promise
+let dataSF;
+
+getWeatherAW(2487956).then(data=> {
+    dataSF=data
+    console.log(dataSF);
+    });
+    -->
+<div class="container page-form" >
+   <!-- <form id="login-form" action="/results" method="post">-->
+    <form id="login-form" method="post">
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" id="name" class="form-control" name="name" placeholder="Enter name">
+        </div>
+        <div class="form-group">
+            <label for="Temp">Temperature</label>
+            <input type="text" id="temp" class="form-control" name="temp" placeholder="Temp">
+        </div>
+  <button type="submit" class="btn btn-success" id="subButton" name="subButton">Log in</button>
+    </form>
+
+    <div class="showContent" id="showContent">
+        <table class="table">
+          <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Temperature</th>
+            </tr>
+          </thead>
+            <tbody class="tbody">
+
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+
+
+{% endblock %}
