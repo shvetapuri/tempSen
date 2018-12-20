@@ -23,6 +23,18 @@ def home():
         d.append({'name':item['name'],'temp':item['temp']} )
     return jsonify(d=d)
 
+@app.route('/graph', methods=[ 'GET'])
+def send_graph_data():
+
+
+    l=Database.find(collection='sensors', query='all')
+    d=[]
+    for item in l:
+        d.append({'name':item['name'],'temp':item['temp']} )
+    return jsonify(d=d)
+
+
+
 def display_data(name):
     print(Database.DATABASE['sensors'].find({'name': name}))
 
