@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: skodb-deployment
+  labels:
+    app: skodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: skodb
+  template:
+    metadata:
+      labels:
+        app: skodb
+    spec:
+      containers:
+        - name: skodb
+          image: us.gcr.io/fred-hsu-veos/skodb:0.1
+          ports:
+          - containerPort: 5002
+          command: [ "python", "src/app.py" ]
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+        - name: skotemp
+          image: us.gcr.io/fred-hsu-veos/skotemp:0.1
+          ports:
+          - containerPort: 5000
+          command: [ "python", "src/app.py" ]
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: skotemp-svc
+spec:
+  selector:
+    app: skotemp
+  ports:
+  - protocol: TCP
+    port: 5000
+    nodePort: 31514
+  type: NodePort
