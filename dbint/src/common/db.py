@@ -1,8 +1,10 @@
 import pymongo
+import os
 
 class Database(object):
     #blueprint
-    URI = "mongodb://docker.for.mac.host.internal:27017"
+    dbhost = os.getenv('MONGO_HOST', "127.0.0.1")
+    URI = "mongodb://" + dbhost + ":27017"
     DATABASE = None
     #will not use self in this method this method will belong to database class as a whole
     #never to instance of a database

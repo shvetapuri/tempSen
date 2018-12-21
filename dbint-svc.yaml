@@ -22,10 +22,8 @@ spec:
           - containerPort: 5002
           command: [ "python", "src/app.py" ]
           env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
+            - name: MONGO_HOST
+              value: "10.90.224.138"
         - name: skotemp
           image: us.gcr.io/fred-hsu-veos/skotemp:0.1
           imagePullPolicy: Always

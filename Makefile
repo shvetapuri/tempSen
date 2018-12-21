@@ -1,4 +1,4 @@
-all: dockerbuilddbint dockerpushdbint dockerbuildtemp dockerpushtemp
+all: dockerbuilddbint dockerpushdbint dockerbuildtemp dockerpushtemp manifest
 
 dockerbuilddbint: #dbint/src/main.py
 	docker build -t us.gcr.io/fred-hsu-veos/skodb:0.1 dbint
@@ -12,6 +12,8 @@ dockerbuildtemp: #temp/src/main.py
 dockerpushtemp: #temp/src/main.py
 	docker push us.gcr.io/fred-hsu-veos/skotemp:0.1
 
+manifest:
+	scp dbint-svc.yaml kube-138:
 # makes yaml file available at https://s3-us-west-2.amazonaws.com/ceos-cni-demo/ceos-cni.yaml
 manifestpush:
 	aws s3 cp ceos-cni.yaml s3://ceos-cni-demo/ceos-cni.yaml --acl public-read-write
