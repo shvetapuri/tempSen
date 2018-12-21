@@ -3,20 +3,21 @@ kind: Deployment
 metadata:
   name: skodb-deployment
   labels:
-    app: skodb
+    app: skotemp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: skodb
+      app: skotemp
   template:
     metadata:
       labels:
-        app: skodb
+        app: skotemp
     spec:
       containers:
         - name: skodb
           image: us.gcr.io/fred-hsu-veos/skodb:0.1
+          imagePullPolicy: Always
           ports:
           - containerPort: 5002
           command: [ "python", "src/app.py" ]
@@ -27,6 +28,7 @@ spec:
                   fieldPath: metadata.name
         - name: skotemp
           image: us.gcr.io/fred-hsu-veos/skotemp:0.1
+          imagePullPolicy: Always
           ports:
           - containerPort: 5000
           command: [ "python", "src/app.py" ]
@@ -46,6 +48,7 @@ spec:
     app: skotemp
   ports:
   - protocol: TCP
-    port: 5000
-    nodePort: 31514
+    port: 5000 # port to expose within cluster
+    targetPort: 5000 # port that pod/container listens to
+    nodePort: 31514 # mapping to nodeport
   type: NodePort
