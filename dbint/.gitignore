@@ -1,3 +1,5 @@
 venv
 venv1
 venv-fred
+.vscode
+*.pyc

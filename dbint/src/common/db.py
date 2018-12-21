@@ -2,7 +2,7 @@ import pymongo
 
 class Database(object):
     #blueprint
-    URI = "mongodb://127.0.0.1:27017"
+    URI = "mongodb://docker.for.mac.host.internal:27017"
     DATABASE = None
     #will not use self in this method this method will belong to database class as a whole
     #never to instance of a database

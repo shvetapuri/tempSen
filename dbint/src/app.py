@@ -39,4 +39,4 @@ def display_data(name):
     print(Database.DATABASE['sensors'].find({'name': name}))
 
 if __name__ == '__main__':
-    app.run(port=5002, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
