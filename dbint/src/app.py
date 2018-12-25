@@ -25,8 +25,6 @@ def home():
 
 @app.route('/graph', methods=[ 'GET'])
 def send_graph_data():
-
-
     l=Database.find(collection='sensors', query='all')
     d=[]
     for item in l:
@@ -39,4 +37,4 @@ def display_data(name):
     print(Database.DATABASE['sensors'].find({'name': name}))
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002, debug=True)
+    app.run(port=5002)

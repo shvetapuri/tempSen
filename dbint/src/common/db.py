@@ -1,5 +1,6 @@
 import pymongo
 import os
+from pymongo import ReturnDocument
 
 class Database(object):
     #blueprint
@@ -16,11 +17,19 @@ class Database(object):
 
     @staticmethod
     def insert(collection,data):
+        seq = Database.getNextSequence('counters', 'userid')
+        data['seq'] = seq
         Database.DATABASE[collection].insert(data)
 
     @staticmethod
     def find(collection, query):
         return Database.DATABASE[collection].find()
+
+    @staticmethod
+    def getNextSequence(collection, name):
+        ret = Database.DATABASE[collection].find_one_and_update({'_id':name}, {'$inc': {'seq': 1}}, return_document=ReturnDocument.AFTER)
+        print(ret)
+        return ret['seq'] 
 
 #gets first element stored in database
     @staticmethod
