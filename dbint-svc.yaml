@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: skodb
-          image: us.gcr.io/fred-hsu-veos/skodb:0.1
+          image: us.gcr.io/fred-hsu-veos/skodb:0.2
           imagePullPolicy: Always
           ports:
           - containerPort: 5002
@@ -24,13 +24,19 @@ spec:
           env:
             - name: MONGO_HOST
               value: "10.90.224.138"
+            - name: FLASK_DEBUG
+              value: "1"
         - name: skotemp
-          image: us.gcr.io/fred-hsu-veos/skotemp:0.1
+          image: us.gcr.io/fred-hsu-veos/skotemp:0.2
           imagePullPolicy: Always
           ports:
           - containerPort: 5000
           command: [ "python", "src/app.py" ]
           env:
+            - name: MONGO_HOST
+              value: "10.90.224.138"
+            - name: FLASK_DEBUG
+              value: "1"
             - name: POD_NAME
               valueFrom:
                 fieldRef:
@@ -46,7 +52,13 @@ spec:
     app: skotemp
   ports:
   - protocol: TCP
+    name: temp
     port: 5000 # port to expose within cluster
     targetPort: 5000 # port that pod/container listens to
     nodePort: 31514 # mapping to nodeport
+  - protocol: TCP
+    name: db
+    port: 5002 # port to expose within cluster
+    targetPort: 5002 # port that pod/container listens to
+    nodePort: 31515 # mapping to nodeport
   type: NodePort

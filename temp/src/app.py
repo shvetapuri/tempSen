@@ -26,11 +26,11 @@ def send_results():
 
     #data = request.get_json()
     #print('here is',data)
-    print ("hi", r.headers['Content-Type'])
+    # print ("hi", r.headers['Content-Type'])
 
 
     return r.text
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000, debug=True)
