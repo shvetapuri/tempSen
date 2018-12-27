@@ -5,6 +5,37 @@
 
 
 window.onload = function() {
+
+    //check if temp is integer
+    const tempField = document.getElementById('temp');
+
+    $("form[name='login-form']").validate({
+
+        rules: {
+
+            name: "required",
+            temp: {
+
+                required: true,
+                number: true
+
+                }
+            },
+        messages:{
+            name: "Please enter name",
+            temp: "Please enter a number"
+
+        }
+
+});
+    $('input').on('blur keyup', function() {
+    if ($("#login-form").valid()) {
+        $('#subButton').prop('disabled', false);
+    } else {
+        $('#subButton').prop('disabled', 'disabled');
+    }
+});
+
 	// setup the button click
 	document.getElementById("subButton").onclick = function() {
 		doWork()
@@ -14,7 +45,10 @@ var data = {
     name: document.getElementById('name').value,
     temp: document.getElementById('temp').value
 };
-var objectData=JSON.stringify(data);
+
+
+
+    var objectData=JSON.stringify(data);
 //console.log(objectData);
 	// ajax the JSON to the server
 	$.post("results", objectData, function(){
@@ -31,7 +65,7 @@ var objectData=JSON.stringify(data);
         console.log(obj.d.length);
 
         for (i=0; i<obj.d.length; i++) {
-            console.log(obj.d[i].name);
+            //console.log(obj.d[i].name);
             $("table tbody").append(`
             <tr>
             <td>${obj.d[i].name}</td>
@@ -41,37 +75,10 @@ var objectData=JSON.stringify(data);
 
 
 
-
-
-        //data.forEach(function(element) {
-        //    console.log(element);
-        //});
-        //var c = $(data).find("#showContent");
-
-       // data1 = data.responseJSON;
-       // console.log(`blaa ${data1}`);
-
-
-
-      //   $.each(data, function(i, item){
-      //      alert("Mine is " + i + "|" + item.name + "|" + item.temp);
-      //  });
-
-
-       //var dataObj = JSON.stringify(data);
-        //console.log(dataObj);
-
-      // var obj=data[1];
-      // console.log(`bla ${data.name}`);
-
-
-
-       //document.getElementById("showContent").innerHTML = d.temp;
-
-
 	});
 	// stop link reloading the page
- event.preventDefault();
+        event.preventDefault();
+
 }
 
 
@@ -101,18 +108,19 @@ getWeatherAW(2487956).then(data=> {
     -->
 <div class="container page-form" >
    <!-- <form id="login-form" action="/results" method="post">-->
-    <form id="login-form" method="post">
+    <form name="login-form" id="login-form" method="post">
         <div class="form-group">
             <label for="Name">Name</label>
             <input type="text" id="name" class="form-control" name="name" placeholder="Enter name">
         </div>
         <div class="form-group">
             <label for="Temp">Temperature</label>
-            <input type="text" id="temp" class="form-control" name="temp" placeholder="Temp">
+            <input  id="temp" class="form-control" name="temp" placeholder="Enter Temperature">
         </div>
-  <button type="submit" class="btn btn-success" id="subButton" name="subButton">Log in</button>
+        <br>
+  <button type="submit" class="btn btn-success" id="subButton" name="subButton">Submit</button>
     </form>
-
+<br>
     <div class="showContent" id="showContent">
         <table class="table">
           <thead>

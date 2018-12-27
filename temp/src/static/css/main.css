@@ -6,3 +6,7 @@
 .page-form {
     max-width: 480px;
 }
+
+form .error {
+  color: #ff0000;
+}
