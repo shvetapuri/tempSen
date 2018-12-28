@@ -18,6 +18,10 @@ spec:
         - name: skodb
           image: us.gcr.io/fred-hsu-veos/skodb:0.2
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "5"
+              memory: "200Mi"
           ports:
           - containerPort: 5002
           command: [ "python", "src/app.py" ]
@@ -27,6 +31,10 @@ spec:
         - name: skotemp
           image: us.gcr.io/fred-hsu-veos/skotemp:0.2
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "5"
+              memory: "200Mi"
           ports:
           - containerPort: 5000
           command: [ "python", "src/app.py" ]
